@@ -1,0 +1,11 @@
+.xbit-banner-holder {
+  background-image: url('./assets/img/banner-bg.png');
+  background-size: cover;
+  min-height: 100vh;
+}
+
+.xbit-nav-text {
+  color: #3f074f;
+  font-size: 40px;
+  font-weight: bold;
+}
