@@ -1,4 +1,4 @@
-import { Select, Input, Modal, Button } from "antd";
+import { Select, Input, Modal, Button, Pagination } from "antd";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -6,12 +6,25 @@ import capsuleImg from "../assets/img/capsule.png";
 
 function DataGrid() {
   const { Search } = Input;
+  const itemRender = (_, type, originalElement) => {
+    if (type === "prev") {
+      return <a>Previous</a>;
+    }
+    if (type === "next") {
+      return <a>Next</a>;
+    }
+    return originalElement;
+  };
 
-  const [searchBy, setSearchBy] = useState("Type");
+  const [searchBy, setSearchBy] = useState("Serial No");
   const [searchVal, setSearchVal] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [allCapsules, setAllCapsules] = useState([]);
   const [showCapsule, setShowCapsule] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const capsulesPerPage = 6;
+  let currentCapsules = [];
+
   const getAllCapsules = async () => {
     await axios.get("http://localhost:5000/capsules").then((result) => {
       setAllCapsules(result.data);
@@ -24,10 +37,6 @@ function DataGrid() {
   const handleChange = (value) => {
     setSearchBy(value);
   };
-  const onSearch = (e) => {
-    e.preventDefault();
-    console.log(e.target.value);
-  };
 
   const showModal = (capsule) => {
     setIsModalOpen(true);
@@ -37,9 +46,36 @@ function DataGrid() {
   const handleOk = () => {
     setIsModalOpen(false);
   };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchVal, searchBy]);
+
+  let searchedCapsules = allCapsules.filter((capsule) => {
+    switch (searchBy) {
+      case "Type":
+        return capsule.type.toLowerCase().includes(searchVal.toLowerCase());
+      case "Status":
+        return capsule.status.toLowerCase().includes(searchVal.toLowerCase());
+      case "Reuse Count":
+        if (capsule.reuse_count || capsule.reuse_count === 0) {
+          console.log(
+            capsule.reuse_count,
+            Number(searchVal),
+            capsule.reuse_count === Number(searchVal),
+            "count"
+          );
+          return capsule.reuse_count === Number(searchVal);
+        } else return false;
+      default:
+        return capsule.capsule_serial
+          .toLowerCase()
+          .includes(searchVal.toLowerCase());
+    }
+  });
+  let indexOfLastPage = currentPage * capsulesPerPage;
+  let indexOfFirstPage = indexOfLastPage - capsulesPerPage;
+  currentCapsules = searchedCapsules.slice(indexOfFirstPage, indexOfLastPage);
+  console.log("kk", showCapsule);
   return (
     <div className="xhibit-container">
       <div className="xbit-searchform-holder">
@@ -47,10 +83,12 @@ function DataGrid() {
           <div>
             <article className="form-label-text">Search By</article>
             <Select
-              defaultValue="Status"
+              defaultValue="Serial No"
+              value={searchBy}
               style={{ width: 200, marginRight: "10px" }}
               onChange={handleChange}
               options={[
+                { value: "Serial No", label: "Serial No" },
                 { value: "Type", label: "Type" },
                 { value: "Status", label: "Status" },
                 { value: "Reuse Count", label: "Reuse Count" },
@@ -64,35 +102,31 @@ function DataGrid() {
               placeholder={`Enter ${searchBy}`}
               value={searchVal}
               onChange={(e) => setSearchVal(e.target.value)}
-              onPressEnter={(e) => onSearch(e)}
               enterButton
             />
           </div>
           <div>
-            <Button type="primary" onClick={() => setSearchVal("")}>
+            <Button
+              type="primary"
+              onClick={() => {
+                setSearchBy("Serial No");
+                setSearchVal("");
+              }}
+            >
               Reset
             </Button>
           </div>
         </div>
       </div>
 
-      <div className="xbit-datagrid-holder">
-        {allCapsules.filter((capsule) => {
-          switch (searchBy) {
-            case "Status":
-              return capsule.status
-                .toLowerCase()
-                .includes(searchVal.toLowerCase());
-            case "Reuse Count":
-              if (capsule.reuse_count) {
-                return capsule.reuse_count === Number(searchVal);
-              } else return false;
-            default:
-              return capsule.type
-                .toLowerCase()
-                .includes(searchVal.toLowerCase());
-          }
-        }).length === 0 ? (
+      <div
+        style={{
+          justifyContent:
+            currentCapsules.length <= 2 ? "flex-start" : "space-between",
+        }}
+        className="xbit-datagrid-holder"
+      >
+        {currentCapsules.length === 0 ? (
           <article
             className="grid-box-description"
             style={{ textAlign: "center" }}
@@ -100,56 +134,57 @@ function DataGrid() {
             -- No Matching Data --
           </article>
         ) : (
-          allCapsules
-            .filter((capsule) => {
-              switch (searchBy) {
-                case "Status":
-                  return capsule.status
-                    .toLowerCase()
-                    .includes(searchVal.toLowerCase());
-                case "Reuse Count":
-                  if (capsule.reuse_count) {
-                    return capsule.reuse_count === Number(searchVal);
-                  } else return false;
-                default:
-                  return capsule.type
-                    .toLowerCase()
-                    .includes(searchVal.toLowerCase());
-              }
-            })
-            .map((capsule) => {
-              return (
-                <div
-                  key={capsule.capsule_serial}
-                  className="datagrid-box relative"
-                  onClick={(e) => showModal(capsule)}
-                >
-                  <div className="datagrid-image relative">
-                    <img src={capsuleImg} width="100%" alt="spacex capsule" />
-                    <article className="grid-box-serial">
-                      {capsule.capsule_serial}
-                    </article>
-                  </div>
-                  <div className="grid-text-box ">
-                    <h5 className="grid-box-heading">{capsule.type}</h5>
-                    <article className="grid-box-status">
-                      Reused {capsule.reuse_count} times
-                      {capsule.status != "unknown" &&
-                        ` and ${capsule.status} now`}
-                      .
-                    </article>
+          currentCapsules.map((capsule) => {
+            return (
+              <div
+                key={capsule.capsule_serial}
+                style={{
+                  marginRight: currentCapsules.length <= 2 ? "2%" : "0",
+                }}
+                className="datagrid-box relative"
+                onClick={(e) => showModal(capsule)}
+              >
+                <div className="datagrid-image relative">
+                  <img src={capsuleImg} width="100%" alt="spacex capsule" />
+                  <article className="grid-box-serial">
+                    {capsule.capsule_serial}
+                  </article>
+                </div>
+                <div className="grid-text-box ">
+                  <h5 className="grid-box-heading">{capsule.type}</h5>
+                  <article className="grid-box-status">
+                    Reused {capsule.reuse_count} times
+                    {capsule.status != "unknown" &&
+                      ` and ${capsule.status} now`}
+                    .
+                  </article>
+                  {capsule.details && (
                     <article className="grid-box-description">
                       {capsule.details}
                     </article>
-                    <Button className="grid-box-btn" type="primary">
-                      More Details
-                    </Button>
-                  </div>
+                  )}
+                  <Button className="grid-box-btn" type="primary">
+                    More Details
+                  </Button>
                 </div>
-              );
-            })
+              </div>
+            );
+          })
         )}
       </div>
+      <div className="grid-pagination-hold">
+        <Pagination
+          onChange={(value) => {
+            setCurrentPage(value);
+          }}
+          pageSize={capsulesPerPage}
+          total={searchedCapsules.length}
+          current={currentPage}
+          hideOnSinglePage={true}
+          itemRender={itemRender}
+        />
+      </div>
+
       <Modal
         centered
         title={`Full Details of ${showCapsule.type}`}
@@ -177,12 +212,12 @@ function DataGrid() {
         <article className="grid-box-description">
           Capsule ID: {showCapsule.capsule_id}
         </article>
-        <article className="grid-box-description">
-          Original Launch: {showCapsule.original_launch}
-        </article>
-        <article className="grid-box-description mar-t-20">
-          All Missions Details:
-        </article>
+        {showCapsule.original_launch && (
+          <article className="grid-box-description">
+            Original Launch: {showCapsule.original_launch}
+          </article>
+        )}
+
         <div
           style={{
             display: "flex",
@@ -190,23 +225,35 @@ function DataGrid() {
             flexWrap: "wrap",
           }}
         >
-          {showCapsule.missions &&
-            showCapsule.missions.map((mission, index) => {
-              return (
-                <div key={index} className="grid-box-missions">
-                  <article className="grid-box-description">
-                    Name: {mission.name}
-                  </article>
-                  <article className="grid-box-description">
-                    Flight: {mission.flight}
-                  </article>
-                </div>
-              );
-            })}
+          {showCapsule.missions ? (
+            <div>
+              <article className="grid-box-description mar-t-20">
+                All Missions Details:
+              </article>
+              <div style={{ display: "flex", flexWrap: "wrap" }}>
+                {showCapsule.missions.map((mission, index) => {
+                  return (
+                    <div key={index} className="grid-box-missions">
+                      <article className="grid-box-description">
+                        Name: {mission.name}
+                      </article>
+                      <article className="grid-box-description">
+                        Flight: {mission.flight}
+                      </article>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ) : null}
         </div>
-        <article className="grid-box-description mar-t-20">
-          {showCapsule.details}
-        </article>
+        {showCapsule.details && (
+          <article className="grid-box-description mar-t-20">
+            Description:
+            <br />
+            {showCapsule.details}
+          </article>
+        )}
       </Modal>
     </div>
   );

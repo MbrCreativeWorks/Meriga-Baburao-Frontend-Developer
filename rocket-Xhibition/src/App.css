@@ -84,11 +84,25 @@
   background-color: rgb(240, 217, 255) !important;
 }
 
+.ant-pagination .ant-pagination-item-active a {
+  color: #e51e9f !important;
+}
+
+.ant-pagination .ant-pagination-item-active {
+  border-color: #e51e9f !important;
+}
+
+a,
+a:hover {
+  color: #e51e9f;
+}
+
+
 .xbit-datagrid-holder {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-bottom: 60px;
+  margin-bottom: 40px;
 }
 
 .datagrid-box {
@@ -160,4 +174,10 @@
 .grid-box-missions {
   margin-right: 20px;
   margin-bottom: 10px;
+}
+
+.grid-pagination-hold {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 60px;
 }

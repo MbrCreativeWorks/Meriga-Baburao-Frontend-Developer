@@ -15,14 +15,16 @@ function App() {
   const footerStyle = {
     textAlign: "center",
     color: "#fff",
-    backgroundColor: "#7dbcea",
+    backgroundColor: "#3f074f",
   };
 
   return (
     <Layout style={layoutStyles}>
       <Banner />
       <DataGrid />
-      <Footer style={footerStyle}>Footer</Footer>
+      <Footer style={footerStyle}>
+        Designed By Meriga Baburao @Brainstorm Force
+      </Footer>
     </Layout>
   );
 }
