@@ -79,13 +79,14 @@ function DataGrid() {
   return (
     <div className="xhibit-container">
       <div className="xbit-searchform-holder">
+        <h2 className="form-section-heading">Capsules Data Grid</h2>
         <div className="form-elements-holder">
           <div>
             <article className="form-label-text">Search By</article>
             <Select
               defaultValue="Serial No"
               value={searchBy}
-              style={{ width: 200, marginRight: "10px" }}
+              className="form-select-element"
               onChange={handleChange}
               options={[
                 { value: "Serial No", label: "Serial No" },
@@ -98,8 +99,8 @@ function DataGrid() {
           <div>
             <article className="form-label-text">Specify</article>
             <Search
-              style={{ width: 280, marginRight: "10px" }}
               placeholder={`Enter ${searchBy}`}
+              className="form-search-element"
               value={searchVal}
               onChange={(e) => setSearchVal(e.target.value)}
               enterButton
@@ -108,6 +109,7 @@ function DataGrid() {
           <div>
             <Button
               type="primary"
+              className="form-reset-element"
               onClick={() => {
                 setSearchBy("Serial No");
                 setSearchVal("");
@@ -131,7 +133,7 @@ function DataGrid() {
             className="grid-box-description"
             style={{ textAlign: "center" }}
           >
-            -- No Matching Data --
+            -- No Data Found --
           </article>
         ) : (
           currentCapsules.map((capsule) => {
@@ -193,7 +195,12 @@ function DataGrid() {
         closable={false}
         width={640}
         footer={[
-          <Button key="submit" type="primary" onClick={handleOk}>
+          <Button
+            className="mar-t-20"
+            key="submit"
+            type="primary"
+            onClick={handleOk}
+          >
             Close
           </Button>,
         ]}

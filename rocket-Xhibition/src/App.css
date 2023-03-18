@@ -1,10 +1,30 @@
 .xhibit-container {
   padding: 0 65px;
+  max-width: 1920px;
+  margin: auto;
+}
+
+.xhibit-footer-styles {
+  text-align: center;
+  color: #fff;
+  background-color: #3f074f;
+}
+
+.xhibit-layout-styles {
+  background-color: #f0d9ff
+}
+
+.xhibit-header-styles {
+  height: auto;
+  background-color: transparent;
+  padding: 30px 0;
 }
 
 .xbit-banner-holder {
   background-image: url('./assets/img/banner-bg.png');
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position-x: 100%;
   min-height: 100vh;
 }
 
@@ -25,7 +45,8 @@
 }
 
 .xhibit-banner-box {
-  height: 60vh;
+  margin-top: 20vh;
+  margin-bottom: 10vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -54,6 +75,28 @@
 
 .xbit-searchform-holder {
   padding: 40px 0;
+}
+
+.form-select-element {
+  width: 200px;
+  margin-right: 10px
+}
+
+.form-reset-element {
+  margin-right: 10px
+}
+
+.form-section-heading {
+  font-size: 48px;
+  color: #3f074f;
+  line-height: 1;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.form-search-element {
+  width: 200px;
+  margin-right: 10px
 }
 
 .form-elements-holder {
@@ -125,7 +168,7 @@ a:hover {
 }
 
 .mar-t-20 {
-  margin-top: 20px;
+  margin-top: 20px !important;
 }
 
 .grid-text-box {
@@ -180,4 +223,117 @@ a:hover {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 60px;
+}
+
+@media only screen and (max-width: 1200px) {
+  .xbit-banner-holder {
+    min-height: unset;
+  }
+
+  .xhibit-banner-box {
+    margin-top: 30vh;
+  }
+
+  .xhibit-banner-heading {
+    font-size: 65px;
+  }
+
+  .xbit-nav-text {
+    font-size: 30px;
+  }
+
+  .xhibit-header-styles {
+    padding: 30px 0;
+  }
+
+  .datagrid-box {
+    flex: 0 0 49%;
+    background-color: white;
+    margin-bottom: 2%;
+  }
+
+  .xhibit-container {
+    padding: 0 40px;
+  }
+}
+
+@media only screen and (max-width: 760px) {
+  .grid-box-heading {
+    font-size: 22px;
+  }
+
+  .grid-box-status {
+    font-size: 18px;
+  }
+
+  .grid-box-description {
+    font-size: 16px;
+  }
+
+  .datagrid-box {
+    flex: 0 0 100%;
+    margin-bottom: 15px;
+  }
+
+  .xhibit-banner-box {
+    margin-top: 20vh;
+    margin-bottom: 5vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .form-section-heading {
+    font-size: 28px;
+  }
+
+  .form-select-element {
+    width: 120px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  .form-reset-element {
+    margin-right: 10px;
+    margin-bottom: 10px;
+
+  }
+
+
+  .form-search-element {
+    width: 200px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+
+  }
+
+  .form-elements-holder {
+    flex-wrap: wrap;
+  }
+
+  .xhibit-container {
+    padding: 0 15px;
+  }
+
+  .xhibit-header-styles {
+    padding: 15px 0;
+  }
+
+  .xbit-nav-text {
+    font-size: 20px;
+  }
+
+  .xhibit-banner-heading {
+    font-size: 42px;
+  }
+
+  .xhibit-banner-subhead {
+    font-size: 24px;
+  }
+
+  .xhibit-banner-text {
+    font-size: 16px;
+  }
+
+
 }

@@ -9,21 +9,13 @@ import "./App.css";
 function App() {
   const { Footer } = Layout;
 
-  const layoutStyles = {
-    backgroundColor: "#f0d9ff",
-  };
-  const footerStyle = {
-    textAlign: "center",
-    color: "#fff",
-    backgroundColor: "#3f074f",
-  };
-
   return (
-    <Layout style={layoutStyles}>
+    <Layout className="xhibit-layout-styles">
       <Banner />
       <DataGrid />
-      <Footer style={footerStyle}>
-        Designed By Meriga Baburao @Brainstorm Force
+      <Footer className="xhibit-footer-styles">
+        Designed By Meriga Baburao <br />
+        For Brainstorm Force Task
       </Footer>
     </Layout>
   );
