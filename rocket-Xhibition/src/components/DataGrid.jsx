@@ -10,6 +10,7 @@ function DataGrid() {
   const [searchBy, setSearchBy] = useState("Status");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [allCapsules, setAllCapsules] = useState([]);
+  const [showCapsule, setShowCapsule] = useState({});
   const getAllCapsules = async () => {
     await axios.get("http://localhost:5000/capsules").then((result) => {
       setAllCapsules(result.data);
@@ -24,8 +25,9 @@ function DataGrid() {
   };
   const onSearch = (value) => console.log(value);
 
-  const showModal = () => {
+  const showModal = (capsule) => {
     setIsModalOpen(true);
+    setShowCapsule(capsule);
   };
 
   const handleOk = () => {
@@ -66,25 +68,29 @@ function DataGrid() {
       <div className="xbit-datagrid-holder">
         {allCapsules.map((capsule) => {
           return (
-            <div className="datagrid-box" onClick={showModal}>
-              <div className="datagrid-image">
+            <div
+              key={capsule.capsule_serial}
+              className="datagrid-box relative"
+              onClick={(e) => showModal(capsule)}
+            >
+              <div className="datagrid-image relative">
                 <img src={capsuleImg} width="100%" alt="spacex capsule" />
+                <article className="grid-box-serial">
+                  {capsule.capsule_serial}
+                </article>
               </div>
-
-              <div className="grid-text-box">
+              <div className="grid-text-box ">
                 <h5 className="grid-box-heading">{capsule.type}</h5>
                 <article className="grid-box-status">
-                  Capsule is {capsule.status}
-                </article>
-                <article className="grid-box-status">
                   Reused {capsule.reuse_count} times
-                </article>
-                <article className="grid-box-status">
-                  Original Launch is {capsule.original_launch}
+                  {capsule.status != "unknown" && ` and ${capsule.status} now`}.
                 </article>
                 <article className="grid-box-description">
                   {capsule.details}
                 </article>
+                <Button className="grid-box-btn" type="primary">
+                  More Details
+                </Button>
               </div>
             </div>
           );
@@ -92,21 +98,60 @@ function DataGrid() {
       </div>
       <Modal
         centered
-        title={`Name Full Details`}
+        title={`Full Details of ${showCapsule.type}`}
         open={isModalOpen}
         onOk={handleOk}
         closable={false}
         footer={[
           <Button key="submit" type="primary" onClick={handleOk}>
-            Okay
+            Close
           </Button>,
         ]}
       >
-        <h5 className="grid-box-heading">Name</h5>
-        <article className="grid-box-status">Capsule is Active</article>
-        <article className="grid-box-status">Reused 0 times</article>
-        <article className="grid-box-status">Launched on Date</article>
-        <article className="grid-box-description">Some Text</article>
+        <div className="datagrid-image relative">
+          <img src={capsuleImg} width="100%" alt="spacex capsule" />
+          <article className="grid-box-serial">
+            {showCapsule.capsule_serial}
+          </article>
+        </div>
+        <h5 className="grid-box-heading mar-t-20">{showCapsule.type}</h5>
+        <article className="grid-box-description ">
+          Reused {showCapsule.reuse_count} times
+          {showCapsule.status != "unknown" && ` and ${showCapsule.status} now`}.
+        </article>
+        <article className="grid-box-description">
+          Capsule ID: {showCapsule.capsule_id}
+        </article>
+        <article className="grid-box-description">
+          Original Launch: {showCapsule.original_launch}
+        </article>
+        <article className="grid-box-description mar-t-20">
+          All Missions Details:
+        </article>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            flexWrap: "wrap",
+          }}
+        >
+          {showCapsule.missions &&
+            showCapsule.missions.map((mission, index) => {
+              return (
+                <div key={index} className="grid-box-missions">
+                  <article className="grid-box-description">
+                    Name: {mission.name}
+                  </article>
+                  <article className="grid-box-description">
+                    Flight: {mission.flight}
+                  </article>
+                </div>
+              );
+            })}
+        </div>
+        <article className="grid-box-description mar-t-20">
+          {showCapsule.details}
+        </article>
       </Modal>
     </div>
   );

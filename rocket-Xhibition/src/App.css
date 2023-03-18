@@ -13,6 +13,10 @@
   color: #851691;
 }
 
+.relative {
+  position: relative;
+}
+
 .xbit-nav-text {
   color: #3f074f;
   font-size: 40px;
@@ -87,17 +91,31 @@
 }
 
 .datagrid-image {
-  width: 60%;
+  width: 100%;
+  background: #3f074f;
   margin: auto;
+  display: flex;
+  padding: 20px 0;
+  justify-content: center;
+}
+
+.datagrid-image img {
+  width: 60%;
+}
+
+.mar-t-20 {
+  margin-top: 20px;
 }
 
 .grid-text-box {
   padding: 20px;
+  margin-bottom: 50px;
 }
 
 .grid-box-heading {
   color: #3f074f;
-  font-size: 28px;
+  font-size: 32px;
+  margin: 0;
 }
 
 .grid-box-description {
@@ -107,6 +125,32 @@
 }
 
 .grid-box-status {
-  font-size: 20px;
+  font-size: 24px;
   color: #521f62;
+}
+
+.grid-box-serial {
+  font-size: 16px;
+  background: #333;
+  color: white;
+  padding: 5px 13px;
+  margin-left: auto;
+  width: max-content;
+  border-radius: 4px;
+  position: absolute;
+  bottom: 50px;
+  right: 0;
+  left: 0;
+  margin: 0 auto;
+}
+
+.grid-box-btn {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+}
+
+.grid-box-missions {
+  margin-right: 20px;
+  margin-bottom: 10px;
 }
