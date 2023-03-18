@@ -58,6 +58,7 @@
 
 .form-elements-holder {
   display: flex;
+  align-items: flex-end;
 }
 
 .form-label-text {
@@ -78,10 +79,16 @@
   border-color: #e51e9f !important;
 }
 
+.ant-select-dropdown .ant-select-item-option-selected {
+  color: #521f62 !important;
+  background-color: rgb(240, 217, 255) !important;
+}
+
 .xbit-datagrid-holder {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  margin-bottom: 60px;
 }
 
 .datagrid-box {
