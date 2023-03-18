@@ -2,17 +2,13 @@ import { Layout } from "antd";
 
 function Banner() {
   const { Header, Content } = Layout;
-  const headerStyle = {};
-  const contentStyle = {
-    backgroundColor: "transparent",
-  };
   return (
     <div className="xbit-banner-holder">
       <div className="xhibit-container">
         <Header className="xhibit-header-styles">
           <article className="xbit-nav-text">Rocket Xhibition</article>
         </Header>
-        <Content style={contentStyle}>
+        <Content style={{ backgroundColor: "transparent" }}>
           <div className="xhibit-banner-box">
             <h1 className="xhibit-banner-heading font-01">
               Rocket <span style={{ color: "#e51e9f" }}> Xhibition</span>

@@ -1,5 +1,6 @@
 .xhibit-container {
   padding: 0 65px;
+  width: 100%;
   max-width: 1920px;
   margin: auto;
 }
