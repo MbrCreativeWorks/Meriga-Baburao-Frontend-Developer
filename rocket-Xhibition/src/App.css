@@ -1,11 +1,112 @@
+.xhibit-container {
+  padding: 0 65px;
+}
+
 .xbit-banner-holder {
   background-image: url('./assets/img/banner-bg.png');
   background-size: cover;
   min-height: 100vh;
 }
 
+.font-01 {
+  font-family: 'Cabin', sans-serif;
+  color: #851691;
+}
+
 .xbit-nav-text {
   color: #3f074f;
   font-size: 40px;
+  font-family: 'Cabin', sans-serif;
   font-weight: bold;
+}
+
+.xhibit-banner-box {
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.xhibit-banner-heading {
+  font-size: 80px;
+  line-height: 1;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #3f074f;
+}
+
+.xhibit-banner-subhead {
+  font-size: 40px;
+  color: #3f074f;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.xhibit-banner-text {
+  font-size: 20px;
+  line-height: 1.2;
+  color: #521f62;
+}
+
+.xbit-searchform-holder {
+  padding: 40px 0;
+}
+
+.form-elements-holder {
+  display: flex;
+}
+
+.form-label-text {
+  font-size: 14px;
+  margin-bottom: 5px;
+  margin-left: 4px;
+}
+
+.ant-btn-primary,
+.ant-btn-primary:hover {
+  background-color: #e51e9f !important;
+}
+
+.ant-input:focus,
+.ant-input:hover,
+.ant-select-selector:hover,
+.ant-select-focused .ant-select-selector {
+  border-color: #e51e9f !important;
+}
+
+.xbit-datagrid-holder {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.datagrid-box {
+  flex: 0 0 32%;
+  background-color: white;
+  margin-bottom: 2%;
+}
+
+.datagrid-image {
+  width: 60%;
+  margin: auto;
+}
+
+.grid-text-box {
+  padding: 20px;
+}
+
+.grid-box-heading {
+  color: #3f074f;
+  font-size: 28px;
+}
+
+.grid-box-description {
+  font-size: 20px;
+  line-height: 1.2;
+  color: #521f62;
+}
+
+.grid-box-status {
+  font-size: 20px;
+  color: #521f62;
 }
