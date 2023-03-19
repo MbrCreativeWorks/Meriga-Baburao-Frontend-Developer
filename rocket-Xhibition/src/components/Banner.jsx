@@ -14,14 +14,15 @@ function Banner() {
               Rocket <span style={{ color: "#e51e9f" }}> Xhibition</span>
             </h1>
             <h2 className="xhibit-banner-subhead font-01">
-              Rocktes Data Visualization
+              Capsules Data Visualization
             </h2>
             <article className="xhibit-banner-text font-01">
               Rocket Xhibition is the place where you can explore
-              <br /> all rockets data launched by spacX more precisely by Elon
-              Musk.
+              <br /> all Rockets anc Capsules data launched by spacX more
+              precisely by Elon Musk.
               <br />
-              You can search for any rocket by Status, Type, and Reuse Count.
+              You can search for any Capsule by Status, Type, Serial Number and
+              Reuse Count.
             </article>
           </div>
         </Content>

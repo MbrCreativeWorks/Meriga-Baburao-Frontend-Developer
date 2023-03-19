@@ -1,7 +1,9 @@
 import { Select, Input, Modal, Button, Pagination } from "antd";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect, Suspense } from "react";
 
+import { useCapsule } from "./CapsuleContext";
+
+const PopupBox = React.lazy(() => import("./PopupBox.jsx"));
 import capsuleImg from "../assets/img/capsule.png";
 
 function DataGrid() {
@@ -16,35 +18,15 @@ function DataGrid() {
     return originalElement;
   };
 
-  const [searchBy, setSearchBy] = useState("Serial No");
+  const { showModal, allCapsules } = useCapsule();
   const [searchVal, setSearchVal] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [allCapsules, setAllCapsules] = useState([]);
-  const [showCapsule, setShowCapsule] = useState({});
+  const [searchBy, setSearchBy] = useState("Serial No");
   const [currentPage, setCurrentPage] = useState(1);
   const capsulesPerPage = 6;
   let currentCapsules = [];
 
-  const getAllCapsules = async () => {
-    await axios.get("http://localhost:5000/capsules").then((result) => {
-      setAllCapsules(result.data);
-    });
-  };
-  useEffect(() => {
-    getAllCapsules();
-  }, []);
-
   const handleChange = (value) => {
     setSearchBy(value);
-  };
-
-  const showModal = (capsule) => {
-    setIsModalOpen(true);
-    setShowCapsule(capsule);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
   };
   useEffect(() => {
     setCurrentPage(1);
@@ -58,12 +40,6 @@ function DataGrid() {
         return capsule.status.toLowerCase().includes(searchVal.toLowerCase());
       case "Reuse Count":
         if (capsule.reuse_count || capsule.reuse_count === 0) {
-          console.log(
-            capsule.reuse_count,
-            Number(searchVal),
-            capsule.reuse_count === Number(searchVal),
-            "count"
-          );
           return capsule.reuse_count === Number(searchVal);
         } else return false;
       default:
@@ -75,7 +51,6 @@ function DataGrid() {
   let indexOfLastPage = currentPage * capsulesPerPage;
   let indexOfFirstPage = indexOfLastPage - capsulesPerPage;
   currentCapsules = searchedCapsules.slice(indexOfFirstPage, indexOfLastPage);
-  console.log("kk", showCapsule);
   return (
     <div className="xhibit-container">
       <div className="xbit-searchform-holder">
@@ -113,6 +88,7 @@ function DataGrid() {
               onClick={() => {
                 setSearchBy("Serial No");
                 setSearchVal("");
+                setCurrentPage(1);
               }}
             >
               Reset
@@ -186,82 +162,9 @@ function DataGrid() {
           itemRender={itemRender}
         />
       </div>
-
-      <Modal
-        centered
-        title={`Full Details of ${showCapsule.type}`}
-        open={isModalOpen}
-        onOk={handleOk}
-        closable={false}
-        width={640}
-        footer={[
-          <Button
-            className="mar-t-20"
-            key="submit"
-            type="primary"
-            onClick={handleOk}
-          >
-            Close
-          </Button>,
-        ]}
-      >
-        <div className="datagrid-image relative">
-          <img src={capsuleImg} width="100%" alt="spacex capsule" />
-          <article className="grid-box-serial">
-            {showCapsule.capsule_serial}
-          </article>
-        </div>
-        <h5 className="grid-box-heading mar-t-20">{showCapsule.type}</h5>
-        <article className="grid-box-description ">
-          Reused {showCapsule.reuse_count} times
-          {showCapsule.status != "unknown" && ` and ${showCapsule.status} now`}.
-        </article>
-        <article className="grid-box-description">
-          Capsule ID: {showCapsule.capsule_id}
-        </article>
-        {showCapsule.original_launch && (
-          <article className="grid-box-description">
-            Original Launch: {showCapsule.original_launch}
-          </article>
-        )}
-
-        <div
-          style={{
-            display: "flex",
-            alignItems: "flex-start",
-            flexWrap: "wrap",
-          }}
-        >
-          {showCapsule.missions ? (
-            <div>
-              <article className="grid-box-description mar-t-20">
-                All Missions Details:
-              </article>
-              <div style={{ display: "flex", flexWrap: "wrap" }}>
-                {showCapsule.missions.map((mission, index) => {
-                  return (
-                    <div key={index} className="grid-box-missions">
-                      <article className="grid-box-description">
-                        Name: {mission.name}
-                      </article>
-                      <article className="grid-box-description">
-                        Flight: {mission.flight}
-                      </article>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          ) : null}
-        </div>
-        {showCapsule.details && (
-          <article className="grid-box-description mar-t-20">
-            Description:
-            <br />
-            {showCapsule.details}
-          </article>
-        )}
-      </Modal>
+      <Suspense fallback={<div>Loading</div>}>
+        <PopupBox />
+      </Suspense>
     </div>
   );
 }
