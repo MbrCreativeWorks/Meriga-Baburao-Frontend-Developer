@@ -27,6 +27,7 @@ function DataGrid() {
 
   const handleChange = (value) => {
     setSearchBy(value);
+    setSearchVal("");
   };
   useEffect(() => {
     setCurrentPage(1);
