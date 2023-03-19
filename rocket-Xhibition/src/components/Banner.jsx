@@ -1,27 +1,32 @@
 import { Layout } from "antd";
+
 function Banner() {
   const { Header, Content } = Layout;
-  const headerStyle = {
-    height: "auto",
-    backgroundColor: "transparent",
-    // backgroundColor: "#f0d9ff",
-    position: "sticky",
-    top: 0,
-    zIndex: 1,
-    width: "100%",
-    padding: "30px 135px",
-  };
-  const contentStyle = {
-    backgroundColor: "transparent",
-  };
   return (
     <div className="xbit-banner-holder">
-      <Header style={headerStyle}>
-        <article className="xbit-nav-text">Rocket Xhibition</article>
-      </Header>
-      <Content style={contentStyle}>
-        <div className="xhibit-container"></div>
-      </Content>
+      <div className="xhibit-container">
+        <Header className="xhibit-header-styles">
+          <article className="xbit-nav-text">Rocket Xhibition</article>
+        </Header>
+        <Content style={{ backgroundColor: "transparent" }}>
+          <div className="xhibit-banner-box">
+            <h1 className="xhibit-banner-heading font-01">
+              Rocket <span style={{ color: "#e51e9f" }}> Xhibition</span>
+            </h1>
+            <h2 className="xhibit-banner-subhead font-01">
+              Capsules Data Visualization
+            </h2>
+            <article className="xhibit-banner-text font-01">
+              Rocket Xhibition is the place where you can explore
+              <br /> all Rockets anc Capsules data launched by spacX more
+              precisely by Elon Musk.
+              <br />
+              You can search for any Capsule by Status, Type, Serial Number and
+              Reuse Count.
+            </article>
+          </div>
+        </Content>
+      </div>
     </div>
   );
 }
